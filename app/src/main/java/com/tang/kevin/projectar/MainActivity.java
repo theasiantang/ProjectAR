@@ -12,6 +12,12 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        String Wikitude_SDK_Key = "gd3tYdWI8VaaEU0g8VjW7K3mF7OHcMLx7VT9kNrJgKXrGzCirUCsi7BK4VZ+H6+vEoWnr8JITtVT7H8g5swZFv3fbri7/AHosvilbmRIqwbw31d4zP0L4M6gtIddRGqfGHrNtd9TVNvplk30ojP/" +
+                "TGG5SUmW3B2Cld+u6Cq9hThTYWx0ZWRfX7HuCsBvCuGc8ZJ8D59YJ6l9ruXyksc3tedfA4wpqc7tvlBSlaAXKCqELDUcGOiTQYEDb96Wuf+DEov3ZLJ0/ldmDsZaR7pAGnmPM0/TPVALBZf3702p470ANRsrHH0n9kzV4G" +
+                "N85rk7lAwnANS1FUA2L8YCWq2nbyXvYyLhRtfp/4StZcGyAVwnEOq7ixdeDC/0OI91tF2TcSm9+/oITgi4TN5L6QMHnvKryzjTjJXEMmACCakHve+z+hTwk9mXNO/wkqwVGyfLS4oH0GXtjDrpaw50DSH1hd0JXfleaBvg" +
+                "5HWzr2TLJX9DAAqnF+HxNDzRjVfPFj9LylEzJHIkjcEaVdJRuKSjNf6EWP/athP3sU88kAfsyGvtZ/6oJZ3m6WEA5vKlZtTjWjpdjmMB/C/Em3HVfb+X4trBoNzr7AjPOKzaCdfY/qOv75RYvP7A/OGs2a0I+bUm4p2RBN" +
+                "pFk144lZNcsCVdTiYIen9zB9BlLlm2wFmjmD8=";
     }
 
     @Override

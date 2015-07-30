@@ -5,4 +5,10 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Animations" />
+    <style name="Animations.SmileWindow">
+        <item name="@android:windowEnterAnimation">@anim/grow_from_bottom</item>
+        <item name="@android:windowExitAnimation">@anim/grow_from_top</item>
+    </style>
+
 </resources>

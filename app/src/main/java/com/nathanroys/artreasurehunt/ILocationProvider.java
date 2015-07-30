@@ -1,4 +1,4 @@
-package com.tang.kevin.projectar;
+package com.nathanroys.artreasurehunt;
 
 /**
  * Created by Nathan Roys on 29/07/2015.

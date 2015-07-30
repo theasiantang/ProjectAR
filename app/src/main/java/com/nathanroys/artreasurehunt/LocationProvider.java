@@ -1,4 +1,4 @@
-package com.tang.kevin.projectar;
+package com.nathanroys.artreasurehunt;
 
 import android.content.Context;
 import android.location.Location;

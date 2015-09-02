@@ -6,13 +6,17 @@ import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.location.LocationListener;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.util.Base64;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.nathanroys.artreasurehunt.artreasurehunt.R;
@@ -56,7 +60,8 @@ public class MainActivity extends AbstractArchitectCamActivity {
 
     @Override
     public String getARchitectWorldPath() {
-        return "http://46.101.24.203/ar-manager/api/v1.0/?key=78e2185582b101b8ee0c78a60c5acaf9&world=1";
+        // This returns the URL for the world to be generated
+        return "http://46.101.24.203/ar-manager-tests/api/v1.0/?key=78e2185582b101b8ee0c78a60c5acaf9&world=1";
     }
 
     @Override
@@ -76,7 +81,7 @@ public class MainActivity extends AbstractArchitectCamActivity {
 
     @Override
     public String getWikitudeSDKLicenseKey() {
-        String key = "dtnhjx0ZY637aEcMOkRExNvk4AuMBbzrAf4aq2nUxxcUKBIZui5pONyXLXVN0dN8FPLgBcZfILeB" +
+        return "dtnhjx0ZY637aEcMOkRExNvk4AuMBbzrAf4aq2nUxxcUKBIZui5pONyXLXVN0dN8FPLgBcZfILeB" +
                 "gurRwziyXCji2zPgIjrooBLYztjUa3Z0nUXN9eczHEYfa6gseIy+qLG0sZYfvaKbVhP09Kaf/hO2HrpDC" +
                 "MGEAc9rooiCyAxTYWx0ZWRfX8+TNsVMDlvLQ92rERUVumVRujP80/R5zrGtXKtRomtYsQP2gOWxF3Pp+k" +
                 "lngpdJr8v1Iyab2YRkFD3eyPQIMZmymayeBw2MH9ZlqsFwSPww7qd1qqq8E/Zd83Sv+nJdF3qbPWU41Bg" +
@@ -86,7 +91,6 @@ public class MainActivity extends AbstractArchitectCamActivity {
                 "9t4PRsi3CaCaHXLMvBOGofDdEvGe0oxDGsqmxoiL5QTDWPU545eVINe6WLB2z2D5SAwzOqznrCzoI6Ncx" +
                 "J+AvZVKC8lKJydAFeZRWHyNWscPZnnqW+jUbfbrQzuHtIP7CkAeGwH864h5374UXyd6VvoLUKz98vKg3B" +
                 "KiHFrFdE6ABdtAMiEjt8e5S1fc2y0yfw+kFVMgKJjVvt";
-        return key;
     }
 
     @Override
@@ -109,11 +113,6 @@ public class MainActivity extends AbstractArchitectCamActivity {
 
             @Override
             public boolean urlWasInvoked(String uriString) {
-                //architectsdk://MarkerSelected?id=4&longitude=-0.370354&latitude=53.770016&desc=aHR0cDovLzQ2LjEwMS4yNC4yMDMvYXItbWFuYWdlci9hcGkvdjEuMC9tYXJrZXItZGVzY3JpcHRpb24ucGhwP2tleT03OGUyMTg1NTgyYjEwMWI4ZWUwYzc4YTYwYzVhY2FmOSZ3b3JsZD0xJmlkPTQ=
-                // id=4
-                // longitude=-0.370354
-                // latitude=53.770016
-                // desc=aHR0cDovLzQ2LjEwMS4yNC4yMDMvYXItbWFuYWdlci9hcGkvdjEuMC9tYXJrZXItZGVzY3JpcHRpb24ucGhwP2tleT03OGUyMTg1NTgyYjEwMWI4ZWUwYzc4YTYwYzVhY2FmOSZ3b3JsZD0xJmlkPTQ=
                 if(uriString.contains("architectsdk://MarkerSelected?"))
                 {
                     // Format the uri
@@ -128,36 +127,56 @@ public class MainActivity extends AbstractArchitectCamActivity {
                     String url = new String(urlBytes);
 
                     // Show webview and load url
-                    AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+                    AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
 
+                    // Linear layout and Edittext work around to force the keyboard to appear in the WebView
+                    LinearLayout wrapper = new LinearLayout(MainActivity.this);
+                    EditText keyboardhack = new EditText(MainActivity.this);
                     WebView wv = new WebView(MainActivity.this);
+
+                    keyboardhack.setVisibility(View.GONE);
                     wv.setBackgroundColor(Color.TRANSPARENT);
 
                     WebSettings webSettings = wv.getSettings();
                     webSettings.setJavaScriptEnabled(true);
+                    webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+                    webSettings.setAppCacheEnabled(true);
+                    webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
                     wv.loadUrl(url);
                     wv.setWebViewClient(new WebViewClient() {
                         @Override
                         public boolean shouldOverrideUrlLoading(WebView view, String url) {
                             view.loadUrl(url);
-
                             return true;
                         }
                     });
 
-                    alert.setView(wv);
+                    // This sets up the Dialog window with a Close button
                     alert.setNegativeButton("Close", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int id) {
+                            MainActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Fixes bug where will not open same desc twice in a row
+                                    MainActivity.this.architectView.callJavascript("resetSelectedItem();");
+                                }
+                            });
                             dialog.dismiss();
                         }
                     });
 
+                    // Linear layout and Edittext work around to force the keyboard to appear in the WebView
+                    // Basically places and invisible text box on top of the WebView which enables the keyboard to appear
+                    wrapper.setOrientation(LinearLayout.VERTICAL);
+                    wrapper.addView(wv, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    wrapper.addView(keyboardhack, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                    alert.setView(wrapper);
                     AlertDialog dialog = alert.show();
                     WindowManager.LayoutParams lp = dialog.getWindow().getAttributes();
                     lp.windowAnimations = R.style.Animations_SmileWindow;
-
                 }
                 return true;
             }

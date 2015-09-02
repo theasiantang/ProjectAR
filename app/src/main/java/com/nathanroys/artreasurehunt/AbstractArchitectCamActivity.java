@@ -34,7 +34,7 @@ public abstract class AbstractArchitectCamActivity extends Activity implements A
 	/**
 	 * holds the Wikitude SDK AR-View, this is where camera, markers, compass, 3D models etc. are rendered
 	 */
-	protected ArchitectView					architectView;
+	public ArchitectView					architectView;
 	
 	/**
 	 * sensor accuracy listener in case you want to display calibration hints
@@ -425,4 +425,5 @@ public abstract class AbstractArchitectCamActivity extends Activity implements A
 	private static double[] getRandomLatLonNearby(final double lat, final double lon) {
 		return new double[] { lat + Math.random()/5-0.1 , lon + Math.random()/5-0.1};
 	}
+
 }

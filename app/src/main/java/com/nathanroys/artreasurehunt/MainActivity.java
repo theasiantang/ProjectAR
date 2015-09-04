@@ -61,7 +61,8 @@ public class MainActivity extends AbstractArchitectCamActivity {
     @Override
     public String getARchitectWorldPath() {
         // This returns the URL for the world to be generated
-        return "http://46.101.24.203/ar-manager-tests/api/v1.0/?key=78e2185582b101b8ee0c78a60c5acaf9&world=1";
+        //return "http://46.101.24.203/ar-manager-tests/api/v1.0/?key=78e2185582b101b8ee0c78a60c5acaf9&world=1";
+        return "http://150.237.89.6/ar-manager-tests/api/v1.0/?key=78e2185582b101b8ee0c78a60c5acaf9&world=1";
     }
 
     @Override
@@ -123,7 +124,8 @@ public class MainActivity extends AbstractArchitectCamActivity {
                     Map argumentMap = getMap(args);
 
                     // Decodee the URL from base64
-                    byte[] urlBytes = Base64.decode((String) argumentMap.get("desc"), -1);
+                    // byte[] urlBytes = Base64.decode((String) argumentMap.get("desc"), -1);   // Why did the original code use a flag of -1? this is not a supported value in the Android documentation
+                    byte[] urlBytes = Base64.decode((String) argumentMap.get("desc"), Base64.NO_PADDING);
                     String url = new String(urlBytes);
 
                     // Show webview and load url
